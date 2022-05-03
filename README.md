@@ -1,5 +1,6 @@
 # Easy ecommerce
-Light weight ecommerce built on laravel
+Light weight ecommerce built on laravel.
+
 Admin built on inertia vue (vue 3) and front-end built on alpine js and blade template.
 
 ## Status
