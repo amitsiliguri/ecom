@@ -1,0 +1,17 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@media (min-width: 640px) {
+    .sm\:text-center {
+        text-align: center;
+      }
+}
+.bg-admin-menu-900{
+    background-color: #0D0C29;
+}
+.hover\:bg-admin-menu-700:hover {
+    background-color: #242849;
+}
+.text-admin-menu-400 {
+    color: #7A80B4;
+}

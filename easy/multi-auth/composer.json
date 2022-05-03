@@ -1,0 +1,32 @@
+{
+    "name": "easy/multi-auth",
+    "description": "laravel multiple authentication",
+    "keywords": ["laravel", "multiple","authentication"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "amitbiswaswebdev",
+            "email": "amit.biswas.webdev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Easy\\MultiAuth\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Easy\\MultiAuth\\MultiAuthServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

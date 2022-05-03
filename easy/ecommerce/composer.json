@@ -1,0 +1,32 @@
+{
+    "name": "easy/ecommerce",
+    "description": "laravel ecommerce",
+    "keywords": ["laravel", "ecommerce"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "amitbiswaswebdev",
+            "email": "amit.biswas.webdev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Easy\\Ecommerce\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Easy\\Ecommerce\\EcommerceServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
