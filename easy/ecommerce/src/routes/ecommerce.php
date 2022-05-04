@@ -10,6 +10,10 @@ use Easy\Ecommerce\Http\Controllers\Admin\{
     Catalog\Product\Simple\DestroyController as ProductSimpleDestroyController,
     Catalog\Product\Simple\CreateController as ProductSimpleCreateController,
     Catalog\Product\Inventory\IndexController as InventoryIndexController,
+    Catalog\Product\Inventory\StoreController as InventoryStoreController,
+    Catalog\Product\Inventory\EditController as InventoryEditController,
+    Catalog\Product\Inventory\UpdateController as InventoryUpdateController,
+    Catalog\Product\Inventory\DestroyController as InventoryDestroyController,
     Catalog\Category\UpdateController as CategoryUpdateController,
     Catalog\Category\StoreController as CategoryStoreController,
     Catalog\Category\EditController as CategoryEditController,
@@ -21,6 +25,11 @@ use Easy\Ecommerce\Http\Controllers\Admin\{
     Customer\IndexController as CustomerIndexController,
     Customer\StoreController as CustomerStoreController,
     Customer\UpdateController as CustomerUpdateController,
+    Customer\Group\CreateController as CustomerGroupCreateController,
+    Customer\Group\EditController as CustomerGroupEditController,
+    Customer\Group\IndexController as CustomerGroupIndexController,
+    Customer\Group\StoreController as CustomerGroupStoreController,
+    Customer\Group\UpdateController as CustomerGroupUpdateController,
     Marketing\CartDiscount\IndexController as CartDiscountIndexController,
     Marketing\CartDiscount\CreateController as CartDiscountCreateController,
     Marketing\CartDiscount\StoreController as CartDiscountStoreController,
@@ -51,9 +60,6 @@ use Easy\Ecommerce\Http\Controllers\Admin\{
 
 Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin', 'admin.verified'])->group(function () {
     Route::prefix('catalog')->name('catalog.')->group(function () {
-        Route::prefix('inventory')->name('inventory.')->group(function () {
-            Route::get('/', [InventoryIndexController::class, '__invoke'])->name('index');
-        });
         Route::prefix('category')->name('category.')->group(function () {
             Route::get('/create', [CategoryCreateController::class, '__invoke'])->name('create');
             Route::get('/edit/{id}', [CategoryEditController::class, '__invoke'])->name('edit');
@@ -66,6 +72,13 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin', 'admin.v
         });
         Route::prefix('product')->name('product.')->group(function () {
             Route::get('/', [ProductIndexController::class, '__invoke'])->name('index');
+            Route::prefix('inventory')->name('inventory.')->group(function () {
+                Route::get('/', [InventoryIndexController::class, '__invoke'])->name('index');
+                Route::post('store', [InventoryStoreController::class, '__invoke'])->name('store');
+                Route::get('edit/{id}', [InventoryEditController::class, '__invoke'])->name('edit');
+                Route::put('update/{id}', [InventoryUpdateController::class, '__invoke'])->name('update');
+                Route::delete('delete/{id}', [InventoryDestroyController::class, '__invoke'])->name('delete');
+            });
             Route::prefix('simple')->name('simple.')->group(function () {
                 Route::get('/create', [ProductSimpleCreateController::class, '__invoke'])->name('create');
                 Route::post('/store', [ProductSimpleStoreController::class, '__invoke'])->name('store');

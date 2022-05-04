@@ -4,21 +4,21 @@ namespace Easy\Ecommerce\Http\Controllers\Admin\Catalog\Product\Inventory;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Easy\Ecommerce\Contracts\Catalog\CategoryServiceInterface;
+use Easy\Ecommerce\Contracts\Catalog\Product\InventoryServiceInterface;
 
 class DestroyController extends Controller
 {
     /**
-     * @var CategoryServiceInterface
+     * @var InventoryServiceInterface
      */
-    private CategoryServiceInterface $categoryService;
+    private InventoryServiceInterface $inventoryService;
 
     /**
-     * @param CategoryServiceInterface $categoryService
+     * @param InventoryServiceInterface $inventoryService
      */
-    public function __construct(CategoryServiceInterface $categoryService)
+    public function __construct(InventoryServiceInterface $inventoryService)
     {
-        $this->categoryService = $categoryService;
+        $this->inventoryService = $inventoryService;
     }
 
     /**
@@ -27,8 +27,8 @@ class DestroyController extends Controller
      */
     public function __invoke(int $id): RedirectResponse
     {
-        $deletedCategory = $this->categoryService->delete($id);
-        $message = $deletedCategory->title . ' deleted successfully.';
-        return redirect()->route('admin.catalog.category.create')->with('success', $message);
+        $deletedInventory= $this->inventoryService->delete($id);
+        $message = $deletedInventory->title . ' deleted successfully.';
+        return redirect()->route('admin.catalog.product.inventory.index')->with('success', $message);
     }
 }

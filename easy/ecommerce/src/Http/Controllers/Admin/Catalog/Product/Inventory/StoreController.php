@@ -6,8 +6,8 @@ namespace Easy\Ecommerce\Http\Controllers\Admin\Catalog\Product\Inventory;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Easy\Ecommerce\Http\Requests\Admin\Catalog\Category\FormRequest;
-use Easy\Ecommerce\Contracts\Catalog\CategoryServiceInterface;
+use Easy\Ecommerce\Http\Requests\Admin\Catalog\Product\InventoryFormRequest;
+use Easy\Ecommerce\Contracts\Catalog\Product\InventoryServiceInterface;
 
 /**
  * @package Easy\Ecommerce
@@ -17,27 +17,27 @@ use Easy\Ecommerce\Contracts\Catalog\CategoryServiceInterface;
 class StoreController extends Controller
 {
     /**
-     * @var CategoryServiceInterface
+     * @var InventoryServiceInterface
      */
-    private CategoryServiceInterface $categoryService;
+    private InventoryServiceInterface $inventoryService;
 
     /**
-     * @param CategoryServiceInterface $categoryService
+     * @param InventoryServiceInterface $inventoryService
      */
-    public function __construct(CategoryServiceInterface $categoryService)
+    public function __construct(InventoryServiceInterface $inventoryService)
     {
-        $this->categoryService = $categoryService;
+        $this->inventoryService = $inventoryService;
     }
 
     /**
      * Handle the incoming request.
      *
-     * @param FormRequest $request
+     * @param InventoryFormRequest $request
      * @return RedirectResponse
      */
-    public function __invoke(FormRequest $request): RedirectResponse
+    public function __invoke(InventoryFormRequest $request): RedirectResponse
     {
-        $this->categoryService->store($request->validated());
-        return redirect()->route('admin.catalog.category.create')->with('success', 'Category updated successfully');
+        $this->inventoryService->store($request->validated());
+        return redirect()->route('admin.catalog.product.inventory.index')->with('success', 'Inventory created successfully');
     }
 }

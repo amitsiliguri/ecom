@@ -1,10 +1,10 @@
 <template>
-    <easy-form-section @submitted="submit()">
+    <easy-form-section @submitted="submit()" class="mb-4">
         <template #title>
-            {{ formMode }} Inventory Form
+            {{ title }}
         </template>
         <template #description>
-            Fill up all the required details to {{ formMode }} inventory.
+            {{ description }}
         </template>
         <template #form>
             <easy-check-box label="Is Category Active?" id="status" v-model:checked="form.status" :error="form.errors.status"/>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+// import { computed } from 'vue'
 import {useForm} from '@inertiajs/inertia-vue3'
 import EasyActionMessage from "@/admin/Components/Form/ActionMessage.vue";
 import EasyInput from "@/admin/Components/Form/Input.vue";
@@ -48,9 +48,23 @@ const props = defineProps({
             }
         }
     },
+    title: {
+        type: String,
+        required: false,
+        default() {
+            return 'Form';
+        }
+    },
+    description: {
+        type: String,
+        required: false,
+        default() {
+            return 'Enter required details';
+        }
+    }
 })
 
-const formMode = computed(() => (props.formData.id) ? 'Edit' : 'Create');
+// const formMode = computed(() => (props.formData.id) ? 'Edit' : 'Create');
 
 const form = useForm({
     _method: (props.formData.id) ? 'PUT' : 'POST',
@@ -60,15 +74,17 @@ const form = useForm({
 })
 
 function submit() {
-    let url = (form.id) ? route('admin.catalog.category.update', form.id) : route('admin.catalog.category.store');
     form.transform((data) => ({
         ...data,
         status: (data.status) ? 1 : 0,
-    })).post(url,{
-        errorBag: 'catalogProductInventory',
-        onSuccess: () => {
-            form.reset()
-        }
-    })
+    })).post(
+        (form.id) ? route('admin.catalog.product.inventory.update', form.id) : route('admin.catalog.product.inventory.store'),
+        {
+                    errorBag: 'catalogProductInventory',
+                    onSuccess: () => {
+                        form.reset()
+                    }
+                }
+    )
 }
 </script>

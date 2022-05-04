@@ -2,26 +2,25 @@
 
 namespace Easy\Ecommerce\Http\Controllers\Admin\Catalog\Product\Inventory;
 
-use Easy\Ecommerce\Contracts\Catalog\CategoryServiceInterface;
-use Illuminate\Http\Request;
+use Easy\Ecommerce\Contracts\Catalog\Product\InventoryServiceInterface;
+use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Http\Controllers\Controller;
 
 class EditController extends Controller
 {
 
     /**
-     * @var CategoryServiceInterface
+     * @var InventoryServiceInterface
      */
-    private CategoryServiceInterface $categoryService;
+    private InventoryServiceInterface $inventoryService;
 
     /**
-     * @param CategoryServiceInterface $categoryService
+     * @param InventoryServiceInterface $inventoryService
      */
-    public function __construct(CategoryServiceInterface $categoryService)
+    public function __construct(InventoryServiceInterface $inventoryService)
     {
-        $this->categoryService = $categoryService;
+        $this->inventoryService = $inventoryService;
     }
 
     /**
@@ -32,10 +31,9 @@ class EditController extends Controller
      */
     public function __invoke(int $id): Response
     {
-        return Inertia::render('Catalog/Category/Update', [
-                'categories' => $this->categoryService->getReorderedCategory(),
-                'category' => $this->categoryService->getById($id)
-            ]
-        );
+        return Inertia::render('Catalog/Product/Inventory/Edit', [
+            'inventories'=> $this->inventoryService->adminGridDisplay(),
+            'inventory'=> $this->inventoryService->getById($id)
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace Easy\Ecommerce\Contracts\Catalog\Product;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use  Easy\Ecommerce\Model\Catalog\Product\Inventory as InventoryModel;
 
 interface InventoryServiceInterface
 {
@@ -30,4 +31,29 @@ interface InventoryServiceInterface
         string $direction = 'DESC',
         array $select = self::INVENTORY_MAIN_TABLE
     ) : LengthAwarePaginator ;
+
+    /**
+     * @param array $inputs
+     * @return InventoryModel
+     */
+    public function store(array $inputs): InventoryModel;
+
+    /**
+     * @param array $inputs
+     * @param int $id
+     * @return InventoryModel
+     */
+    public function update(array $inputs, int $id): InventoryModel;
+
+    /**
+     * @param int $id
+     * @return InventoryModel
+     */
+    public function getById(int $id): InventoryModel;
+
+    /**
+     * @param int $id
+     * @return InventoryModel
+     */
+    public function delete(int $id): InventoryModel;
 }

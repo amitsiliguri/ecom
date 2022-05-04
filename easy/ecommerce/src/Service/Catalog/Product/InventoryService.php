@@ -38,4 +38,42 @@ class InventoryService implements InventoryServiceInterface
         return $this->productInventoryModel::select($select)->orderBy($sortBy, $direction)->paginate($paginate);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function store(array $inputs): ProductInventoryModel
+    {
+        return $this->productInventoryModel::create([
+            'status' => $inputs['status'],
+            'title' => $inputs['title']
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(array $inputs, int $id): ProductInventoryModel
+    {
+        $this->productInventoryModel::where('id', $id)->update([
+            'status' => $inputs['status'],
+            'title' => $inputs['title']
+        ]);
+        return $this->getById( $id);
+    }
+
+    /**
+     * @param int $id
+     * @return ProductInventoryModel
+     */
+    public function getById(int $id): ProductInventoryModel
+    {
+        return $this->productInventoryModel::findOrFail($id);
+    }
+
+    public function delete(int $id): ProductInventoryModel
+    {
+        $inventory = $inventoryTemp = $this->getById($id);
+        $inventory->delete();
+        return $inventoryTemp;
+    }
 }

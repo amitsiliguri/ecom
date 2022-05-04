@@ -5,7 +5,9 @@
             <template v-if="item.children.length">
                 <expansion-panel :open="item">
                     <template v-slot:expansionHeader>
-                        <div class="flex items-center items-stretch hover:text-white hover:bg-admin-menu-700 cursor-pointer" @click="toggleExpansion(index)">
+                        <div
+                            class="flex items-center items-stretch hover:text-white hover:bg-admin-menu-700 cursor-pointer"
+                            @click="toggleExpansion(index)">
                             <p class="flex items-center p-3 text-base font-normal group grow">
                                 <i class="mdi mx-2" :class="item.icon" aria-hidden="true"></i>
                                 <span class="ml-3">{{ item.title }}</span>
@@ -64,13 +66,23 @@ const items = reactive([
     //     ],
     //     open: false
     // },
-    // {
-    //     title: 'Customers',
-    //     icon: 'mdi-account-group-outline',
-    //     link: 'admin.customer.index',
-    //     children: [],
-    //     open: false
-    // },
+    {
+        title: 'Users',
+        icon: 'mdi-account-group-outline',
+        // link: 'admin.customer.index',
+        link: '',
+        children: [{
+            title: 'Customers',
+            link: 'admin.catalog.category.create',
+            icon: 'mdi-view-dashboard-outline'
+        },
+            {
+                title: 'Customer Group', //type => rejected, accepted, returned
+                link: 'admin.catalog.product.index',
+                icon: 'mdi-view-dashboard-outline'
+            },],
+        open: false
+    },
     {
         title: 'Catalog',
         icon: 'mdi-book-multiple-outline',
@@ -88,7 +100,7 @@ const items = reactive([
             },
             {
                 title: 'Inventory',
-                link: 'admin.catalog.inventory.index',
+                link: 'admin.catalog.product.inventory.index',
                 icon: 'mdi-view-dashboard-outline'
             },
         ],

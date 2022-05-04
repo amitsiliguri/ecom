@@ -6,7 +6,7 @@
                 Inventories
             </h2>
         </template>
-        <inventory-form title="Create Inventory" description="Enter required details to create a new inventory."/>
+        <inventory-form title="Update Inventory" description="Enter required details to update the inventory." :form-data="$page.props.inventory"/>
         <inventory-table/>
     </EasyAuthenticatedLayout>
 </template>

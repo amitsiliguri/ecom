@@ -4,35 +4,35 @@ namespace Easy\Ecommerce\Http\Controllers\Admin\Catalog\Product\Inventory;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Easy\Ecommerce\Http\Requests\Admin\Catalog\Category\FormRequest;
-use Easy\Ecommerce\Contracts\Catalog\CategoryServiceInterface;
+use Easy\Ecommerce\Http\Requests\Admin\Catalog\Product\InventoryFormRequest;
+use Easy\Ecommerce\Contracts\Catalog\Product\InventoryServiceInterface;
 
 class UpdateController extends Controller
 {
     /**
-     * @var CategoryServiceInterface
+     * @var InventoryServiceInterface
      */
-    private CategoryServiceInterface $categoryService;
+    private InventoryServiceInterface $inventoryService;
 
     /**
-     * @param CategoryServiceInterface $categoryService
+     * @param InventoryServiceInterface $inventoryService
      */
-    public function __construct(CategoryServiceInterface $categoryService)
+    public function __construct(InventoryServiceInterface $inventoryService)
     {
-        $this->categoryService = $categoryService;
+        $this->inventoryService = $inventoryService;
     }
 
     /**
      * Handle the incoming request.
      *
-     * @param FormRequest $request
+     * @param InventoryFormRequest $request
      * @param int $id
      * @return RedirectResponse
      */
-    public function __invoke(FormRequest $request, int $id): RedirectResponse
+    public function __invoke(InventoryFormRequest $request, int $id): RedirectResponse
     {
-        $category = $this->categoryService->update($request->validated(), $id);
-        $message = $category->title . ' update successfully.';
-        return redirect()->route('admin.catalog.category.create')->with('success', $message);
+        $inventory = $this->inventoryService->update($request->validated(),$id);
+        $message = $inventory->title . ' update successfully.';
+        return redirect()->route('admin.catalog.product.inventory.index')->with('success', $message);
     }
 }
