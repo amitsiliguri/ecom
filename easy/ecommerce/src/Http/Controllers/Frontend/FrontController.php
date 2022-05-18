@@ -25,6 +25,7 @@ class FrontController extends Controller
      */
     public function __invoke(Request $request): View|Factory|Application
     {
-        return view('ecommerce::pages.front');
+        // return view('ecommerce::pages.front');
+        return view('welcome');
     }
 }

@@ -16,6 +16,8 @@ use Easy\Ecommerce\Contracts\Catalog\ProductServiceInterface;
 use Easy\Ecommerce\Service\Catalog\ProductService;
 use Easy\Ecommerce\Contracts\Catalog\Product\InventoryServiceInterface;
 use Easy\Ecommerce\Service\Catalog\Product\InventoryService;
+use Easy\Ecommerce\Contracts\User\Customer\GroupInterface;
+use Easy\Ecommerce\Service\User\Customer\Group;
 
 /**
  * @package Easy\Ecommerce
@@ -34,6 +36,7 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->app->singleton(CategoryServiceInterface::class, CategoryService::class);
         $this->app->singleton(InventoryServiceInterface::class, InventoryService::class);
         $this->app->singleton(ProductServiceInterface::class, ProductService::class);
+        $this->app->singleton(GroupInterface::class, Group::class);
     }
 
     /**

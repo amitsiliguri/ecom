@@ -2,10 +2,8 @@
 
 namespace Easy\Ecommerce\Model\Customer;
 
-use Easy\Ecommerce\Model\Catalog\Product\TierPrices;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Group extends Model
 {
@@ -25,18 +23,7 @@ class Group extends Model
      */
     protected $fillable = [
         'id',
+        'status',
         'title'
     ];
-
-    /**
-     * @return HasMany
-     */
-    public function tierPrice(): HasMany
-    {
-        return $this->hasMany(
-            TierPrices::class,
-            'customer_group_id',
-            'id'
-        );
-    }
 }

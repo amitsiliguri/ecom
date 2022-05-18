@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('customer_group', static function (Blueprint $table) {
             $table->id();
+            $table->boolean('status')->default(true);
             $table->string('title', 100)->unique();
             $table->timestamps();
         });

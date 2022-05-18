@@ -78,7 +78,7 @@ const items = reactive([
         },
             {
                 title: 'Customer Group', //type => rejected, accepted, returned
-                link: 'admin.catalog.product.index',
+                link: 'admin.customer.group.index',
                 icon: 'mdi-view-dashboard-outline'
             },],
         open: false

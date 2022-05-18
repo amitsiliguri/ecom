@@ -89,6 +89,13 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin', 'admin.v
         });
     });
     Route::prefix('customer')->name('customer.')->group(function () {
+        Route::prefix('group')->name('group.')->group(function () {
+            Route::get('/', [CustomerGroupIndexController::class, '__invoke'])->name('index');
+            Route::get('/create', [CustomerGroupCreateController::class, '__invoke'])->name('create');
+            Route::get('/edit/{id}', [CustomerGroupEditController::class, '__invoke'])->name('edit');
+            Route::post('/store', [CustomerGroupStoreController::class, '__invoke'])->name('store');
+            Route::put('/update/{id}', [CustomerGroupUpdateController::class, '__invoke'])->name('update');
+        });
         Route::get('/', [CustomerIndexController::class, '__invoke'])->name('index');
         Route::get('/create', [CustomerCreateController::class, '__invoke'])->name('create');
         Route::get('/edit/{id}', [CustomerEditController::class, '__invoke'])->name('edit');
