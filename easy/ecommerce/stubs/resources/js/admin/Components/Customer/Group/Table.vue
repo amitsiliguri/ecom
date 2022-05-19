@@ -5,7 +5,7 @@
             <template v-else>No</template>
         </template>
         <template #cell-actions="{ row }">
-            <easy-link class="float-right" :link="route('admin.users.edit', row.id )">
+            <easy-link class="float-right" :link="route('admin.customer.group.edit', row.id )">
                 Edit
             </easy-link>
         </template>

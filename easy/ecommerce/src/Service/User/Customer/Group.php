@@ -35,5 +35,21 @@ class Group implements GroupInterface
         ]);
     }
 
+    /**
+     * @param int $id
+     * @return CustomerGroupModel
+     */
+    public function getById(int $id): CustomerGroupModel
+    {
+        return $this->customerGroupModel::findOrFail($id);
+    }
 
+    public function update(array $inputs, int $id): CustomerGroupModel
+    {
+        $this->customerGroupModel::where('id', $id)->update([
+            'status' => $inputs['status'],
+            'title' => $inputs['title']
+        ]);
+        return $this->getById( $id);
+    }
 }

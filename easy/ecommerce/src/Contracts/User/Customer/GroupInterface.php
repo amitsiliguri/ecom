@@ -39,4 +39,17 @@ interface GroupInterface
      * @return CustomerGroupModel
      */
     public function store(array $inputs): CustomerGroupModel;
+
+    /**
+     * @param int $id
+     * @return CustomerGroupModel
+     */
+    public function getById(int $id): CustomerGroupModel;
+
+    /**
+     * @param array $inputs
+     * @param int $id
+     * @return CustomerGroupModel
+     */
+    public function update(array $inputs, int $id): CustomerGroupModel;
 }
