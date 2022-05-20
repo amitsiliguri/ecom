@@ -11,7 +11,11 @@
             </easy-link>
 
             <template v-if="row.id !== 1">
-                <inventory-table-delete-action :id="row.id" />
+                <inventory-table-delete-action
+                    :id="row.id"
+                    url="admin.catalog.product.inventory.delete"
+                    title="Delete Inventory"
+                />
             </template>
 
 
@@ -23,13 +27,9 @@
 import {reactive} from "vue";
 import EasyTable from "@/admin/Components/Table.vue";
 import EasyLink from "@/admin/Components/Link.vue";
-import InventoryTableDeleteAction from '@/admin/Components/Catalog/Product/Inventory/Delete.vue';
+import InventoryTableDeleteAction from '@/admin/Components/Ui/DeleteModal.vue';
+
 const tableHead = reactive([
-    // {
-    //     align: "text-left",
-    //     label: "ID",
-    //     column: "id",
-    // },
     {
         align: "text-left",
         label: "Title",

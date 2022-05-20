@@ -52,4 +52,11 @@ class Group implements GroupInterface
         ]);
         return $this->getById( $id);
     }
+
+    public function delete(int $id): CustomerGroupModel
+    {
+        $customerGroup = $customerGroupTemp = $this->getById($id);
+        $customerGroup->delete();
+        return $customerGroupTemp;
+    }
 }

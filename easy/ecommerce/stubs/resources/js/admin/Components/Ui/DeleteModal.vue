@@ -5,11 +5,11 @@
 
     <confirmation-modal :show="deleteItem.confirmingDeletion" @close="confirmDeletion(false)">
         <template #title>
-            Delete
+            {{ title }}
         </template>
 
         <template #content>
-            Are you sure you want to delete this inventory? Once a inventory is deleted, all of its resources and data will be permanently deleted.
+            {{ description }}
         </template>
 
         <template #footer>
@@ -37,7 +37,24 @@ const props = defineProps({
         type: Number,
         required: true
     },
-
+    title: {
+        type: String,
+        required: false,
+        default() {
+            return 'Delete'
+        }
+    },
+    description : {
+        type: String,
+        required: false,
+        default() {
+            return 'Are you sure you want to delete this item? Once this item is deleted, all of its resources and data will be permanently deleted.'
+        }
+    },
+    url: {
+        type: String,
+        required: true
+    },
 })
 
 const deleteItem = reactive({confirmingDeletion: false})
@@ -49,7 +66,7 @@ const confirmDeletion = (value) => {
 }
 
 const deleteItemById = () => {
-    form.delete(route('admin.catalog.product.inventory.delete', props.id),
+    form.delete(route(props.url, props.id),
     {
              onSuccess: () => {
                  confirmDeletion(false)

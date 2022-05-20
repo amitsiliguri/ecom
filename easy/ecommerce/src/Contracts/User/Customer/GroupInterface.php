@@ -52,4 +52,10 @@ interface GroupInterface
      * @return CustomerGroupModel
      */
     public function update(array $inputs, int $id): CustomerGroupModel;
+
+    /**
+     * @param int $id
+     * @return CustomerGroupModel
+     */
+    public function delete(int $id): CustomerGroupModel;
 }

@@ -30,6 +30,7 @@ use Easy\Ecommerce\Http\Controllers\Admin\{
     Customer\Group\IndexController as CustomerGroupIndexController,
     Customer\Group\StoreController as CustomerGroupStoreController,
     Customer\Group\UpdateController as CustomerGroupUpdateController,
+    Customer\Group\DestroyController as CustomerGroupDestroyController,
     Marketing\CartDiscount\IndexController as CartDiscountIndexController,
     Marketing\CartDiscount\CreateController as CartDiscountCreateController,
     Marketing\CartDiscount\StoreController as CartDiscountStoreController,
@@ -95,6 +96,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web','auth:admin', 'admin.v
             Route::get('/edit/{id}', [CustomerGroupEditController::class, '__invoke'])->name('edit');
             Route::post('/store', [CustomerGroupStoreController::class, '__invoke'])->name('store');
             Route::put('/update/{id}', [CustomerGroupUpdateController::class, '__invoke'])->name('update');
+            Route::delete('/delete/{id}', [CustomerGroupDestroyController::class, '__invoke'])->name('delete');
         });
         Route::get('/', [CustomerIndexController::class, '__invoke'])->name('index');
         Route::get('/create', [CustomerCreateController::class, '__invoke'])->name('create');
