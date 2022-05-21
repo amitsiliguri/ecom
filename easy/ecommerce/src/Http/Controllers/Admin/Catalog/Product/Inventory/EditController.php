@@ -32,7 +32,7 @@ class EditController extends Controller
     public function __invoke(int $id): Response
     {
         return Inertia::render('Catalog/Product/Inventory/Edit', [
-            'inventories'=> $this->inventoryService->adminGridDisplay(),
+            'inventories'=> $this->inventoryService->getList(),
             'inventory'=> $this->inventoryService->getById($id)
         ]);
     }

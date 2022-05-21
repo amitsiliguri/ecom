@@ -62,7 +62,8 @@ class ProductService implements ProductServiceInterface
     /**
      * @inheritdoc
      */
-    public function adminGridDisplay(
+    public function getList(
+        bool $isPaginated = true,
         int    $paginate = 10,
         string $sortBy = 'id',
         string $direction = 'DESC',

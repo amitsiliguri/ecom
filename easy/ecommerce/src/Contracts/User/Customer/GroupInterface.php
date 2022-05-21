@@ -6,6 +6,7 @@ namespace Easy\Ecommerce\Contracts\User\Customer;
 
 use Easy\Ecommerce\Model\Customer\Group as CustomerGroupModel;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 interface GroupInterface
 {
@@ -21,18 +22,22 @@ interface GroupInterface
     ];
 
     /**
-     * @param int $paginate
+     * @param bool $isPaginated
      * @param array $select
+     * @param array $conditions
+     * @param int $paginate
      * @param string $sortBy
      * @param string $direction
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator|Collection
      */
-    public function adminGridDisplay(
+    public function getList(
+        bool $isPaginated = true,
+        array $select = self::CUSTOMER_GROUP_MAIN_TABLE,
+        array $conditions  = [],
         int $paginate = 10,
         string $sortBy = 'id',
-        string $direction = 'DESC',
-        array $select = self::CUSTOMER_GROUP_MAIN_TABLE
-    ) : LengthAwarePaginator ;
+        string $direction = 'DESC'
+    ) : LengthAwarePaginator| Collection;
 
     /**
      * @param array $inputs

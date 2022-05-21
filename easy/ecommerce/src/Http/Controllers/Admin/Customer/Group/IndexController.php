@@ -33,7 +33,7 @@ class IndexController extends Controller
     {
         return Inertia::render('Customer/Group/Index', [
             'customer'=> [
-                'groups' => $this->groupInterface->adminGridDisplay()
+                'groups' => $this->groupInterface->getList()
             ]
         ]);
     }

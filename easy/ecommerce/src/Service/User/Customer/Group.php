@@ -5,6 +5,7 @@ namespace Easy\Ecommerce\Service\User\Customer;
 use Easy\Ecommerce\Contracts\User\Customer\GroupInterface;
 use Easy\Ecommerce\Model\Customer\Group as CustomerGroupModel;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class Group implements GroupInterface
 {
@@ -19,9 +20,30 @@ class Group implements GroupInterface
     /**
      * @inheritDoc
      */
-    public function adminGridDisplay(int $paginate = 10, string $sortBy = 'id', string $direction = 'DESC', array $select = self::CUSTOMER_GROUP_MAIN_TABLE): LengthAwarePaginator
-    {
-        return $this->customerGroupModel::select($select)->orderBy($sortBy, $direction)->paginate($paginate);
+    public function getList(
+        bool $isPaginated = true, 
+        array $select = self::CUSTOMER_GROUP_MAIN_TABLE, 
+        array $conditions  = [], 
+        int $paginate = 10, 
+        string $sortBy = 'id', 
+        string $direction = 'DESC'
+    ) : LengthAwarePaginator| Collection {
+        $list = $this->customerGroupModel::select($select)->orderBy($sortBy, $direction);
+        if (count($conditions)) {
+            foreach ($conditions as $condition){
+                if (
+                    array_key_exists('column',$condition) &&
+                    array_key_exists('operator',$condition) &&
+                    array_key_exists('value',$condition)
+                ) {
+                    $list->where($condition['column'],$condition['operator'],$condition['value']);
+                }
+            }
+        }
+        if ($isPaginated) {
+            $list->paginate($paginate);
+        }
+        return $list->get();
     }
 
     /**

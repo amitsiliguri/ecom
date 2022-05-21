@@ -31,13 +31,15 @@ interface ProductServiceInterface
     ];
 
     /**
+     * @param bool $all
      * @param int $paginate
-     * @param array $select
      * @param string $sortBy
      * @param string $direction
+     * @param array $select
      * @return LengthAwarePaginator
      */
-    public function adminGridDisplay(
+    public function getList(
+        bool $isPaginated = true,
         int $paginate = 10,
         string $sortBy = 'id',
         string $direction = 'DESC',

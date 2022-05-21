@@ -3,6 +3,9 @@
 namespace Easy\Ecommerce\Http\Controllers\Admin\Catalog\Product\Simple;
 
 use Easy\Ecommerce\Contracts\Catalog\ProductServiceInterface;
+use Easy\Ecommerce\Contracts\Catalog\Product\InventoryServiceInterface;
+use Easy\Ecommerce\Contracts\User\Customer\GroupInterface as GroupServiceInterface;
+use Easy\Ecommerce\Contracts\Catalog\CategoryServiceInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
@@ -17,11 +20,20 @@ class CreateController extends Controller
     private ProductServiceInterface $productService;
 
     /**
-     * @param ProductServiceInterface $productService
+//     * @param ProductServiceInterface $productService
+     * @param InventoryServiceInterface $inventoryService
+     * @param GroupServiceInterface $groupService
      */
-    public function __construct(ProductServiceInterface $productService)
-    {
-        $this->productService = $productService;
+    public function __construct(
+//        ProductServiceInterface $productService,
+        InventoryServiceInterface $inventoryService,
+        GroupServiceInterface $groupService,
+        CategoryServiceInterface $categoryService
+    ) {
+//        $this->productService = $productService;
+        $this->inventoryService = $inventoryService;
+        $this->groupService = $groupService;
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -32,74 +44,24 @@ class CreateController extends Controller
      */
     public function __invoke(Request $request): Response
     {
-        $customerGroups = array(
-            array(
-                'id' => 1,
-                'title' => 'Default Customer Group'
-            ),
-            array(
-                'id' => 2,
-                'title' => 'Customer Group 1'
-            ),
-            array(
-                'id' => 3,
-                'title' => 'Customer Group 2'
-            ),
-        );
-
-        $inventories = array(
-            array(
-                'id' => 1,
-                'title' => 'Default inventory very long'
-            ),
-            array(
-                'id' => 2,
-                'title' => 'inventory 1'
-            ),
-            array(
-                'id' => 3,
-                'title' => 'inventory 2'
-            ),
-        );
-
-        $categories = array(
-            array(
-                'id' => 1,
-                'title' => 'Default category 1',
-                'parent' => 0
-            ),
-            array(
-                'id' => 2,
-                'title' => 'category 2',
-                'parent' => 1
-            ),
-            array(
-                'id' => 3,
-                'title' => 'category 3',
-                'parent' => 1
-            ),
-            array(
-                'id' => 4,
-                'title' => 'category 2 4',
-                'parent' => 2
-            ),
-            array(
-                'id' => 5,
-                'title' => 'category 3 5',
-                'parent' => 3
-            ),
-            array(
-                'id' => 6,
-                'title' => 'category 3 6',
-                'parent' => 3
-            ),
-        );
-
         return Inertia::render('Catalog/Product/Simple/Create', [
-            'product' => $this->productService->adminFormProductData(1),
-            'customer_groups' => $customerGroups,
-            'inventories' => $inventories,
-            'categories' => $categories
+            'user' => [
+                'customer' => [
+                    'groups' => $this->groupService->getList(false, ['id','status', 'title'],[
+                        [
+                            'column' => 'status',
+                            'operator' => '=',
+                            'value' => 1
+                        ]
+                    ])
+                ],
+            ],
+            'catalog' => [
+                'categories' => $this->categoryService->getReorderedCategory(),
+                'product' => [
+                    'inventories' => $this->inventoryService->getList(false)
+                ]
+            ]
         ]);
     }
 }

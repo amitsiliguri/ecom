@@ -7,6 +7,7 @@ namespace Easy\Ecommerce\Service\Catalog\Product;
 use Easy\Ecommerce\Contracts\Catalog\Product\InventoryServiceInterface;
 use Easy\Ecommerce\Model\Catalog\Product\Inventory as ProductInventoryModel;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @namespace Easy\Ecommerce\Service\Catalog\Product
@@ -29,13 +30,18 @@ class InventoryService implements InventoryServiceInterface
     /**
      * @inheritdoc
      */
-    public function adminGridDisplay(
+    public function getList(
+        bool $isPaginated = true,
         int $paginate = 10,
         string $sortBy = 'id',
         string $direction = 'DESC',
         array $select = self::INVENTORY_MAIN_TABLE,
-    ): LengthAwarePaginator {
-        return $this->productInventoryModel::select($select)->orderBy($sortBy, $direction)->paginate($paginate);
+    )  : LengthAwarePaginator| Collection {
+        if ($isPaginated) {
+            return $this->productInventoryModel::select($select)->orderBy($sortBy, $direction)->paginate($paginate);
+        } else {
+            return $this->productInventoryModel::all();
+        }
     }
 
     /**

@@ -37,7 +37,7 @@ class IndexController extends Controller
     public function __invoke(Request $request): Response
     {
         return Inertia::render('Catalog/Product/Inventory/Index', [
-            'inventories'=> $this->inventoryService->adminGridDisplay()
+            'inventories'=> $this->inventoryService->getList()
         ]);
     }
 }

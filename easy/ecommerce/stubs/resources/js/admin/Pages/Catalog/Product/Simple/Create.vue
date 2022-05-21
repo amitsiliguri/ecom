@@ -6,10 +6,10 @@
                 Create a new product
             </h2>
         </template>
-<!--        <pre>-->
-<!--            {{ $page.props.product }}-->
-<!--        </pre>-->
-        <simple-form :customerGroups="$page.props.customer_groups" :inventories="$page.props.inventories"/>
+        <simple-form
+            :customerGroups="$page.props.user.customer.groups"
+            :inventories="$page.props.catalog.product.inventories"
+        />
     </EasyAuthenticatedLayout>
 </template>
 

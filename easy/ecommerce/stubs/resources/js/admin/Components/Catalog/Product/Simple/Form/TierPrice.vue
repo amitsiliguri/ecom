@@ -23,7 +23,11 @@
                             <div class="w-48 px-2">
                                 <div class="block my-4">
                                     <easy-label value="Customer Group" />
-                                    <tree-select v-model="data.value" :multiple="false" :options="data.options" class="mt-1"/>
+                                    <tree-select
+                                        v-model="tier_price.customer_group_id"
+                                        :multiple="false"
+                                        :options="computedCustomerGroups"
+                                        class="mt-1" />
                                 </div>
                             </div>
                             <div class="grow px-2">
@@ -54,15 +58,18 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import TreeSelect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import DialogModal from '@/admin/Components/Ui/DialogModal.vue'
 import EasyButton from "@/admin/Components/Form/Button.vue";
 import EasyInput from "@/admin/Components/Form/Input.vue";
 import EasyDangerButton from "@/admin/Components/Form/DangerButton.vue";
-import EasySelect from '@/admin/Components/Form/Select.vue';
+// import EasySelect from '@/admin/Components/Form/Select.vue';
 import EasyLabel from "@/admin/Components/Form/Label.vue";
+import {keyMapping} from '@/admin/Composable/KeyMapping'
+const {initializeKeyMapping} = keyMapping();
+
 const props = defineProps({
     tierPrices: {
         type: Array,
@@ -100,7 +107,6 @@ let modal = reactive({
 })
 
 let tierPriceData = reactive([])
-
 tierPriceData = props.tierPrices
 
 const toggleModal = (status) => {
@@ -121,29 +127,12 @@ const addNewTierPrice = () => {
     );
 }
 
-
 const removeTierPrice = (index) => {
     tierPriceData.splice(index, 1)
 }
 
-let data = reactive({
-    value: null,
-    options: [{
-        id: 'a',
-        label: 'a',
-        children: [{
-            id: 'aa',
-            label: 'aa',
-        }, {
-            id: 'ab',
-            label: 'ab',
-        }],
-    }, {
-        id: 'b',
-        label: 'b',
-    }, {
-        id: 'c',
-        label: 'c',
-    }]
+const computedCustomerGroups = computed(() => {
+    return initializeKeyMapping(props.customerGroups, {label :'title', id :'id', children : 'children'})
 })
+
 </script>
