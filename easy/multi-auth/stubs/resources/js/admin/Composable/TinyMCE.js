@@ -9,6 +9,8 @@ export function initTinyMCE() {
           browser_spellcheck: true,
           image_title: true,
           automatic_uploads: true,
+          skin: "oxide-dark",
+          content_css: "dark",
           file_picker_types: "image",
           file_picker_callback: function (cb, value, meta) {
               let input = document.createElement("input");

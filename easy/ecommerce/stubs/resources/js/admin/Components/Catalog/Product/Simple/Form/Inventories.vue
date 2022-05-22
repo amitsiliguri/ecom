@@ -35,7 +35,7 @@
             </template>
 
             <template #footer>
-                <easy-button type="button">
+                <easy-button @click="saveModal()" type="button">
                     SAVE
                 </easy-button>
             </template>
@@ -49,8 +49,6 @@ import {onMounted, reactive, watch} from "vue";
 import DialogModal from '@/admin/Components/Ui/DialogModal.vue'
 import EasyButton from "@/admin/Components/Form/Button.vue";
 import EasyInput from "@/admin/Components/Form/Input.vue";
-// import EasyDangerButton from "@/admin/Components/Form/DangerButton.vue";
-// import EasySelect from '@/admin/Components/Form/Select.vue';
 import EasyCustomSelect from '@/admin/Components/Form/CustomSelect.vue';
 
 const props = defineProps({
@@ -84,6 +82,8 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits(['inventoryInputs'])
+
 const data = reactive({
     modal_status: false,
     selected_ids: [],
@@ -96,6 +96,11 @@ onMounted(() => {
 
 const toggleModal = (status) => {
     return data.modal_status = status
+}
+
+const saveModal = () => {
+    emit('inventoryInputs', data.selected_inventories)
+    toggleModal(false)
 }
 
 watch(() => [...data.selected_ids], (newValue, oldValue) => {

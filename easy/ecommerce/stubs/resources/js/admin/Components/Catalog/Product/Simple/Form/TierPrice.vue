@@ -16,28 +16,28 @@
 
                 <template #content>
                     <template v-if="tierPriceData.length > 0">
-                        <div v-for="(tier_price,index) in tierPriceData" :key="index" class="flex my-2">
+                        <div v-for="(tierPrice,index) in tierPriceData" :key="index" class="flex my-2">
                             <div class="grow pr-2">
-                                <easy-input label="Qty" :id="'qty' + index" type="number" v-model="tier_price.quantity"/>
+                                <easy-input label="Qty" :id="'qty' + index" type="number" v-model="tierPrice.quantity"/>
                             </div>
                             <div class="w-48 px-2">
                                 <div class="block my-4">
                                     <easy-label value="Customer Group" />
                                     <tree-select
-                                        v-model="tier_price.customer_group_id"
+                                        v-model="tierPrice.customer_group_id"
                                         :multiple="false"
                                         :options="computedCustomerGroups"
                                         class="mt-1" />
                                 </div>
                             </div>
                             <div class="grow px-2">
-                                <easy-input label="Offer Price" :id="'special_price' + index" type="text" v-model="tier_price.special_price"/>
+                                <easy-input label="Offer Price" :id="'special_price' + index" type="text" v-model="tierPrice.special_price"/>
                             </div>
                             <div class="grow px-2">
-                                <easy-input label="Offer start date" :id="'offer_start' + index" type="date" v-model="tier_price.offer_start"/>
+                                <easy-input label="Offer start date" :id="'offer_start' + index" type="date" v-model="tierPrice.offer_start"/>
                             </div>
                             <div class="grow px-2">
-                                <easy-input label="Offer end date" :id="'offer_end' + index" type="date" v-model="tier_price.offer_end"/>
+                                <easy-input label="Offer end date" :id="'offer_end' + index" type="date" v-model="tierPrice.offer_end"/>
                             </div>
                             <div class="w-16 pl-2 flex items-end">
                                 <easy-danger-button class="mb-4 py-3" @click="removeTierPrice(index)" v-if="index > 0">
@@ -49,7 +49,7 @@
                 </template>
 
                 <template #footer>
-                    <easy-button @click="toggleModal(false)" type="button">
+                    <easy-button @click="saveModal()" type="button">
                         SAVE
                     </easy-button>
                 </template>
@@ -65,7 +65,7 @@ import DialogModal from '@/admin/Components/Ui/DialogModal.vue'
 import EasyButton from "@/admin/Components/Form/Button.vue";
 import EasyInput from "@/admin/Components/Form/Input.vue";
 import EasyDangerButton from "@/admin/Components/Form/DangerButton.vue";
-// import EasySelect from '@/admin/Components/Form/Select.vue';
+import EasyCustomSelect from '@/admin/Components/Form/CustomSelect.vue';
 import EasyLabel from "@/admin/Components/Form/Label.vue";
 import {keyMapping} from '@/admin/Composable/KeyMapping'
 const {initializeKeyMapping} = keyMapping();
@@ -101,6 +101,7 @@ const props = defineProps({
         }
     }
 })
+const emit = defineEmits(['tierPricesInputs'])
 
 let modal = reactive({
     status: false
@@ -110,7 +111,11 @@ let tierPriceData = reactive([])
 tierPriceData = props.tierPrices
 
 const toggleModal = (status) => {
-   return modal.status = status
+    return modal.status = status
+}
+const saveModal = () => {
+    emit('tierPricesInputs', tierPriceData)
+    toggleModal(false)
 }
 
 const addNewTierPrice = () => {
@@ -132,7 +137,7 @@ const removeTierPrice = (index) => {
 }
 
 const computedCustomerGroups = computed(() => {
-    return initializeKeyMapping(props.customerGroups, {label :'title', id :'id', children : 'children'})
+    return initializeKeyMapping(props.customerGroups, {title: 'label'})
 })
 
 </script>

@@ -57,7 +57,7 @@ class CreateController extends Controller
                 ],
             ],
             'catalog' => [
-                'categories' => $this->categoryService->getReorderedCategory(),
+                'categories' => $this->categoryService->getList(false, ['id', 'title', 'parent_id', 'sort_order'], [], 0, 'sort_order', 'ASC'),
                 'product' => [
                     'inventories' => $this->inventoryService->getList(false)
                 ]

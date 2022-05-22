@@ -8,6 +8,8 @@ use Easy\Ecommerce\Contracts\Catalog\CategoryServiceInterface;
 use Easy\Ecommerce\Model\Catalog\Category as CategoryModel;
 use Easy\Ecommerce\Contracts\FileUploadInterface;
 use Easy\Ecommerce\Contracts\Catalog\Category\TreeInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @package Easy\Ecommerce
@@ -70,7 +72,16 @@ class CategoryService implements CategoryServiceInterface
      */
     public function getReorderedCategory(): array
     {
-        return $this->tree->getTree($this->categoryModel::orderBy('sort_order', 'ASC')->select('id', 'title', 'parent_id')->get()->toArray());
+        return $this->tree->getTree(
+            $this->getList(
+                false,
+                ['id', 'title', 'parent_id', 'sort_order'],
+                [],
+                0,
+                'sort_order',
+                'ASC'
+            )->toArray()
+        );
     }
 
 
@@ -126,5 +137,32 @@ class CategoryService implements CategoryServiceInterface
         }
         $category->delete();
         return $categoryTemp;
+    }
+
+    public function getList(
+        bool $isPaginated = true,
+        array $select = self::CATALOG_CATEGORY_MAIN_TABLE,
+        array $conditions = [],
+        int $paginate = 10,
+        string $sortBy = 'id',
+        string $direction = 'DESC'
+    ): LengthAwarePaginator|Collection
+    {
+        $list = $this->categoryModel::select($select)->orderBy($sortBy, $direction);
+        if (count($conditions)) {
+            foreach ($conditions as $condition){
+                if (
+                    array_key_exists('column',$condition) &&
+                    array_key_exists('operator',$condition) &&
+                    array_key_exists('value',$condition)
+                ) {
+                    $list->where($condition['column'],$condition['operator'],$condition['value']);
+                }
+            }
+        }
+        if ($isPaginated) {
+           return $list->paginate($paginate);
+        }
+        return $list->get();
     }
 }

@@ -31,18 +31,17 @@
 
 
 
-            <div class="flex justify-between">
+            <div>
                 <h4 class="text-2xl">Categories</h4>
             </div>
             <div class="flex my-2 space-x-2">
-
-                <tree-select v-model="data.value" :multiple="true" :options="data.options"/>
+                <tree-select v-model="form.categories" :multiple="true" value-consists-of="ALL" :options="computedCategoryTree"/>
             </div>
 
 
             <div class="flex justify-between">
                 <h4 class="text-2xl">Price</h4>
-                <tier-price :tier-prices="form.tier_prices" :customer-groups="customerGroups"/>
+                <tier-price :tier-prices="form.tier_prices" :customer-groups="customerGroups" @tierPricesInputs="getTierPriceInputs"/>
             </div>
             <div class="flex my-2 space-x-2">
                 <div class="grow">
@@ -64,10 +63,10 @@
             <div class="flex justify-between">
                 <h4 class="text-2xl">Inventories</h4>
                 <template v-if="form.maintain_stock">
-                    <inventories :selected-inventories="form.inventories" :available-inventories="props.inventories"/>
+                    <inventories :selected-inventories="form.inventories" :available-inventories="props.inventories" @inventoryInputs="getInventoryInputs"/>
                 </template>
             </div>
-            <div class="flex my-2 space-x-2 mb-48">
+            <div class="flex mt-2 mb-12 space-x-2">
                 <div class="w-1/4">
                     <easy-check-box label="Is available for sale?" id="in_stock" v-model:checked="form.in_stock" :error="form.errors.in_stock"/>
                 </div>
@@ -93,11 +92,11 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import TreeSelect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import {useForm} from '@inertiajs/inertia-vue3'
-import {initTinyMCE} from '@/admin/Composable/TinyMCE.js'
+
 import {imagePreview} from '@/admin/Composable/ImagePreview.js'
 import EasyActionMessage from "@/admin/Components/Form/ActionMessage.vue";
 import EasyFormSection from "@/admin/Components/Form/FormSection.vue";
@@ -111,7 +110,12 @@ import EasyCheckBox from "@/admin/Components/Form/Checkbox";
 import EasyFileUpload from '@/admin/Components/Form/FileUpload.vue';
 import TierPrice from '@/admin/Components/Catalog/Product/Simple/Form/TierPrice.vue'
 import Inventories from '@/admin/Components/Catalog/Product/Simple/Form/Inventories.vue'
+import {initTinyMCE} from '@/admin/Composable/TinyMCE.js'
+import {keyMapping} from '@/admin/Composable/KeyMapping'
+import {Tree} from '@/admin/Composable/Tree'
 
+const {nest} = Tree();
+const {initializeKeyMapping} = keyMapping();
 const {key, initEditor} = initTinyMCE();
 const {getPreviewImage, constructImageObject, getMultiplePreviewImages} = imagePreview();
 
@@ -215,40 +219,17 @@ const props = defineProps({
     },
     categories: {
         type: Array,
-        required: true,
-        default() {
-            return [
-                {
-                    id: 1,
-                    title: "Default",
-                    parent: 0
-                }
-            ]
-        }
+        required: true
     },
 })
 
-
+const computedCategoryTree = computed(() => {
+    let formattedCategories = initializeKeyMapping(props.categories, {title: 'label'})
+    return nest(formattedCategories)
+})
 
 let data = reactive({
-    value: null,
-    options: [{
-        id: 'a',
-        label: 'a',
-        children: [{
-            id: 'aa',
-            label: 'aa',
-        }, {
-            id: 'ab',
-            label: 'ab',
-        }],
-    }, {
-        id: 'b',
-        label: 'b',
-    }, {
-        id: 'c',
-        label: 'c',
-    }]
+    value: null
 })
 
 /**
@@ -278,11 +259,20 @@ const form = useForm({
     images: getMultiplePreviewImages(props.formData.images),
     price: props.formData.price,
     tier_prices: props.formData.tier_prices,
-    inventories: props.formData.inventories
+    inventories: props.formData.inventories,
+    categories: null
 })
 
+const getTierPriceInputs = (val) => {
+    form.tier_prices = val
+}
+
+const getInventoryInputs = (val) => {
+    form.inventories = val
+}
+
 function submit() {
-    console.log('form')
+    console.log(form)
     // let url = (form.id) ? route('admin.catalog.category.update', form.id) : route('admin.catalog.category.store');
     // form.transform((data) => ({
     //     ...data,

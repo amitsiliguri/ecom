@@ -9,6 +9,7 @@
         <simple-form
             :customerGroups="$page.props.user.customer.groups"
             :inventories="$page.props.catalog.product.inventories"
+            :categories="$page.props.catalog.categories"
         />
     </EasyAuthenticatedLayout>
 </template>

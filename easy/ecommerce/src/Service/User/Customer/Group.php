@@ -21,11 +21,11 @@ class Group implements GroupInterface
      * @inheritDoc
      */
     public function getList(
-        bool $isPaginated = true, 
-        array $select = self::CUSTOMER_GROUP_MAIN_TABLE, 
-        array $conditions  = [], 
-        int $paginate = 10, 
-        string $sortBy = 'id', 
+        bool $isPaginated = true,
+        array $select = self::CUSTOMER_GROUP_MAIN_TABLE,
+        array $conditions  = [],
+        int $paginate = 10,
+        string $sortBy = 'id',
         string $direction = 'DESC'
     ) : LengthAwarePaginator| Collection {
         $list = $this->customerGroupModel::select($select)->orderBy($sortBy, $direction);
@@ -41,7 +41,7 @@ class Group implements GroupInterface
             }
         }
         if ($isPaginated) {
-            $list->paginate($paginate);
+            return $list->paginate($paginate);
         }
         return $list->get();
     }
