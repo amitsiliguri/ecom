@@ -13,24 +13,31 @@ use Inertia\Response;
 
 class CreateController extends Controller
 {
-
     /**
-     * @var ProductServiceInterface
+     * @var InventoryServiceInterface
      */
-    private ProductServiceInterface $productService;
+    protected InventoryServiceInterface $inventoryService;
 
     /**
-//     * @param ProductServiceInterface $productService
+     * @var GroupServiceInterface
+     */
+    protected GroupServiceInterface $groupService;
+
+    /**
+     * @var CategoryServiceInterface
+     */
+    protected CategoryServiceInterface $categoryService;
+
+    /**
      * @param InventoryServiceInterface $inventoryService
      * @param GroupServiceInterface $groupService
+     * @param CategoryServiceInterface $categoryService
      */
     public function __construct(
-//        ProductServiceInterface $productService,
         InventoryServiceInterface $inventoryService,
         GroupServiceInterface $groupService,
         CategoryServiceInterface $categoryService
     ) {
-//        $this->productService = $productService;
         $this->inventoryService = $inventoryService;
         $this->groupService = $groupService;
         $this->categoryService = $categoryService;

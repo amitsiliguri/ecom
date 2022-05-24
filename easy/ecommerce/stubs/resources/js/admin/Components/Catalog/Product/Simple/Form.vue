@@ -10,7 +10,8 @@
         <template #form>
             <easy-check-box label="Is Product Active?" id="status" v-model:checked="form.status"
                             :error="form.errors.status"/>
-            <easy-input label="Title" id="title" type="text" v-model="form.title" autofocus :error="form.errors.title"/>
+            <easy-input label="Title *" id="title" type="text" v-model="form.title" autofocus :error="form.errors.title"/>
+            <easy-input label="SKU *" id="sku" type="text" v-model="form.sku" autofocus :error="form.errors.sku"/>
             <easy-file-upload label="Product Images" id="banner" v-model="form.images" multiple/>
             <div class="block my-4">
                 <EasyLabel for="small_description" value="Small Description"/>
@@ -22,7 +23,7 @@
                 <editor id="description" :api-key="key" :init="initEditor(500)" v-model="form.description"/>
                 <easy-input-error :message="form.errors.description"/>
             </div>
-            <easy-input label="Slug" id="slug" type="text" v-model="form.slug" :error="form.errors.slug"/>
+            <easy-input label="Slug *" id="slug" type="text" v-model="form.slug" :error="form.errors.slug"/>
             <easy-input label="Meta Title" id="meta_title" type="text" v-model="form.meta_title"
                         :error="form.errors.meta_title"/>
             <easy-text-area label="Meta Description" id="meta_description" v-model="form.meta_description"
@@ -232,16 +233,11 @@ let data = reactive({
     value: null
 })
 
-/**
- *
- * @param propsFormDataInventories
- * @returns {*}
- */
-
 const form = useForm({
     _method: (props.formData.id) ? 'PUT' : 'POST',
     id: props.formData.id,
     status: Boolean(props.formData.status),
+    sku: props.formData.sku,
     title: props.formData.title,
     small_description: props.formData.small_description,
     description: props.formData.description,
@@ -273,18 +269,19 @@ const getInventoryInputs = (val) => {
 
 function submit() {
     console.log(form)
-    // let url = (form.id) ? route('admin.catalog.category.update', form.id) : route('admin.catalog.category.store');
-    // form.transform((data) => ({
-    //     ...data,
-    //     status: (data.status) ? 1 : 0,
-    //     banner: constructImageObject(data.banner),
-    //     meta_image: constructImageObject(data.meta_image),
-    // })).post(url,{
-    //     errorBag: 'catalogCategory',
-    //     onSuccess: () => {
-    //         form.reset()
-    //
-    //     }
-    // })
+    let url = (form.id) ? route('admin.catalog.product.simple.update', form.id) : route('admin.catalog.product.simple.store');
+    form.transform((data) => ({
+        ...data,
+        status: (data.status) ? 1 : 0,
+        maintain_stock: (data.maintain_stock) ? 1 : 0,
+        in_stock: (data.in_stock) ? 1 : 0,
+        images: constructImageObject(data.images),
+        meta_image: constructImageObject(data.meta_image),
+    })).post(url,{
+        errorBag: 'catalogProductSimple',
+        onSuccess: () => {
+            form.reset()
+        }
+    })
 }
 </script>
