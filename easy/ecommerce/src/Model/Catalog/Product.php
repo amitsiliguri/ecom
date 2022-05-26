@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Easy\Ecommerce\Model\Catalog\Product\Image;
 use Easy\Ecommerce\Model\Catalog\Product\Price;
 use Easy\Ecommerce\Model\Catalog\Product\TierPrices;
-//use Easy\Ecommerce\Model\Catalog\Product\Stock;
+use Easy\Ecommerce\Model\Catalog\Product\Stock;
 use Easy\Ecommerce\Model\Catalog\Product\Inventory;
 
 class Product extends Model
@@ -90,6 +90,14 @@ class Product extends Model
             'product_id',
             'inventory_id'
         )->withPivot(['quantity']);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function stocks(): HasMany
+    {
+        return $this->hasMany(Stock::class, 'product_id', 'id');
     }
 
     /**

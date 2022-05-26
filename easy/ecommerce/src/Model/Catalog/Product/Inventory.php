@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Easy\Ecommerce\Model\Catalog\Product;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Inventory extends Model
 {
@@ -26,14 +27,21 @@ class Inventory extends Model
     protected $fillable = ['status','title'];
 
     /**
-     * @return BelongsToMany
+     * Get the inventories for the product.
      */
-    public function inventories(): BelongsToMany
+    public function stocks(): HasMany
     {
-        return $this->belongsToMany(
-            Product::class,'stocks',
+        return $this->hasMany(Stock::class, 'inventory_id', 'id');
+    }
+
+    /**
+     * The products that belong to the source.
+     */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class,'stocks',
             'inventory_id',
-            'product_id')->withPivot(['quantity']
-        );
+            'product_id'
+        )->withPivot(['quantity','reserved_quantity']);
     }
 }

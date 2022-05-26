@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('type', 30)->default('simple');
             $table->boolean('maintain_stock')->default(true);
+            $table->boolean('in_stock')->default(true);
             $table->string('slug', 100)->unique();
             $table->string('meta_title', 100)->nullable();
             $table->string('meta_description', 170)->nullable();

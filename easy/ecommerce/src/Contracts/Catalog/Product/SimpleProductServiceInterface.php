@@ -8,9 +8,9 @@ interface SimpleProductServiceInterface
 {
     /**
      * @param array $inputs
-     * @return ProductModel
+     * @return void
      */
-    public function store(array $inputs): ProductModel;
+    public function store(array $inputs): void;
 
     /**
      * @param array $inputs

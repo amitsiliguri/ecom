@@ -74,7 +74,8 @@ const props = defineProps({
                     status: true,
                     title: '',
                     pivot: {
-                        quantity: 0
+                        quantity: 0,
+                        inventory_id: null,
                     }
                 }
             ]
@@ -112,7 +113,8 @@ watch(() => [...data.selected_ids], (newValue, oldValue) => {
             status: true,
             title: value.title,
             pivot: {
-                quantity: 0
+                quantity: 0,
+                inventory_id: value.id,
             }
         });
     } else {
