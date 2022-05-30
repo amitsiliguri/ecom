@@ -7,6 +7,16 @@ use Easy\Ecommerce\Model\Catalog\Product as ProductModel;
 interface SimpleProductServiceInterface
 {
     /**
+     * Meta Image Path
+     */
+    public const META_IMAGE_PATH = 'catalog/product/simple/meta_image';
+
+    /**
+     * Image Path
+     */
+    public const IMAGE_PATH = 'catalog/product/simple/image';
+
+    /**
      * @param array $inputs
      * @return void
      */

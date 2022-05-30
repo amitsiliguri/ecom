@@ -52,9 +52,9 @@ class SimpleFormRequest extends HttpFormRequest
             'tier_prices.*.customer_group_id' => ['sometimes', 'integer'],
             'tier_prices.*.offer_start' => ['nullable', 'string'],
             'tier_prices.*.offer_end' => ['nullable', 'string'],
-            'inventories.*.status' => ['nullable', Rule::requiredIf($this->maintain_stock ), 'boolean'],
-            'inventories.*.pivot.quantity' => ['nullable', Rule::requiredIf($this->maintain_stock ), 'integer'],
-            'inventories.*.pivot.inventory_id' => ['nullable', Rule::requiredIf($this->maintain_stock ), 'integer'],
+            'inventories.*.status' => ['nullable', Rule::requiredIf($this->maintain_stock === true), 'boolean'],
+            'inventories.*.pivot.quantity' => ['nullable', Rule::requiredIf($this->maintain_stock  === true), 'integer'],
+            'inventories.*.pivot.inventory_id' => ['nullable', Rule::requiredIf($this->maintain_stock  === true), 'integer'],
             'categories.*' => ['integer','exists:catalog_categories,id']
         ];
 
