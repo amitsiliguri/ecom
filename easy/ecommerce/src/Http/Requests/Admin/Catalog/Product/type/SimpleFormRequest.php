@@ -40,7 +40,7 @@ class SimpleFormRequest extends HttpFormRequest
             'small_description' => ['nullable', 'string', 'max:300'],
             'description' => ['nullable', 'string', 'max:1500'],
             'maintain_stock' => ['nullable', 'boolean'],
-            'in_stock' => ['nullable', 'boolean'],
+            'in_stock' => ['required', 'boolean'],
             'meta_title' => ['nullable', 'string'],
             'meta_description' => ['nullable', 'string'],
             'price.base_price' => ['required', 'string'],
@@ -52,9 +52,8 @@ class SimpleFormRequest extends HttpFormRequest
             'tier_prices.*.customer_group_id' => ['sometimes', 'integer'],
             'tier_prices.*.offer_start' => ['nullable', 'string'],
             'tier_prices.*.offer_end' => ['nullable', 'string'],
-            'inventories.*.status' => ['nullable', Rule::requiredIf($this->maintain_stock === true), 'boolean'],
-            'inventories.*.pivot.quantity' => ['nullable', Rule::requiredIf($this->maintain_stock  === true), 'integer'],
-            'inventories.*.pivot.inventory_id' => ['nullable', Rule::requiredIf($this->maintain_stock  === true), 'integer'],
+            'stocks.*.quantity' => ['nullable', Rule::requiredIf($this->maintain_stock  === true), 'integer'],
+            'stocks.*.inventory_id' => ['nullable', Rule::requiredIf($this->maintain_stock  === true), 'integer'],
             'categories.*' => ['integer','exists:catalog_categories,id']
         ];
 

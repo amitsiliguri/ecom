@@ -23,6 +23,7 @@ interface ProductServiceInterface
         'small_description',
         'description',
         'maintain_stock',
+        'in_stock',
         'slug',
         'meta_title',
         'meta_description',

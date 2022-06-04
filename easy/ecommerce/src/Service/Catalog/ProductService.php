@@ -87,12 +87,9 @@ class ProductService implements ProductServiceInterface
     {
         return $this->productModel::with([
             'price' => fn($q) => $q->select(['id', 'base_price', 'special_price', 'offer_start', 'offer_end', 'product_id']),
-//            'tierPrice' => fn($q) => $q->with([
-//                'customerGroup' => fn($q) => $q->select(['id', 'title']),
-//            ])->select(['id', 'quantity', 'special_price', 'offer_start', 'offer_end', 'product_id', 'customer_group_id']),
             'tierPrice' => fn($q) => $q->select(['id', 'quantity', 'special_price', 'offer_start', 'offer_end', 'product_id', 'customer_group_id']),
             'images' => fn($q) => $q->select(['id', 'image', 'type', 'alt_name', 'product_id']),
-            'inventories' => fn($q) => $q->select(['inventories.id', 'inventories.status', 'inventories.title']),
+            'stocks' => fn($q) => $q->select(['quantity','reserved_quantity','product_id','inventory_id']),
             'categories' => fn($q) => $q->select(['catalog_categories.id', 'catalog_categories.status', 'catalog_categories.title', 'catalog_categories.slug'])
         ])->select(self::PORDUCT_MAIN_TABLE)->findOrFail($id);
     }

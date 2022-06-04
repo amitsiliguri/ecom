@@ -31,9 +31,10 @@ class SimpleProductService implements SimpleProductServiceInterface
      */
     public function store(array $inputs): void
     {
+        $now = now();
         Log::build([
             'driver' => 'single',
-            'path' => storage_path('logs/inputs.log'),
+            'path' => storage_path('logs/inputs'.$now.'.log'),
         ])->error([
             'message' => $inputs,
         ]);
@@ -71,15 +72,12 @@ class SimpleProductService implements SimpleProductServiceInterface
             }
             // add inventories to product
             if (
-                $inputs['in_stock'] === 1 &&
-                array_key_exists("inventories",$inputs) &&
-                is_array($inputs['inventories']) &&
-                count($inputs['inventories']) > 0
+                (int) $inputs['in_stock'] === 1 &&
+                array_key_exists("stocks",$inputs) &&
+                is_array($inputs['stocks']) &&
+                count($inputs['stocks']) > 0
             ) {
-                $inventories = $this->stockCollection($inputs['inventories']);
-                if (count($inventories) > 0) {
-                    $newProduct->stocks()->createMany($inventories);
-                }
+                $newProduct->stocks()->createMany($inputs['stocks']);
             }
             $newProduct->categories()->sync($inputs['categories']);
             $newProduct->price()->create($inputs['price']);
@@ -115,19 +113,6 @@ class SimpleProductService implements SimpleProductServiceInterface
     public function update(array $inputs, int $id): ProductModel
     {
         // TODO: Implement update() method.
-    }
-
-    /**
-     * @param array $inventories
-     * @return array
-     */
-    private function stockCollection(array $inventories = []) : array {
-        $newInventories = [];
-        foreach ($inventories as $key => $inventory) {
-            $newInventories[$key]['inventory_id'] = $inventory['pivot']['inventory_id'];
-            $newInventories[$key]['quantity'] = $inventory['pivot']['quantity'];
-        }
-        return $newInventories;
     }
 
     protected function createURL(string $slug, string $title = null): string

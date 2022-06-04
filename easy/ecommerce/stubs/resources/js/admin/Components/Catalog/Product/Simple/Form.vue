@@ -10,7 +10,8 @@
         <template #form>
             <easy-check-box label="Is Product Active?" id="status" v-model:checked="form.status"
                             :error="form.errors.status"/>
-            <easy-input label="Title *" id="title" type="text" v-model="form.title" autofocus :error="form.errors.title"/>
+            <easy-input label="Title *" id="title" type="text" v-model="form.title" autofocus
+                        :error="form.errors.title"/>
             <easy-input label="SKU *" id="sku" type="text" v-model="form.sku" autofocus :error="form.errors.sku"/>
             <easy-file-upload label="Product Images" id="banner" v-model="form.images" multiple/>
             <div class="block my-4">
@@ -31,51 +32,58 @@
             <easy-file-upload label="Meta Image" id="meta_image" v-model="form.meta_image"/>
 
 
-
             <div>
                 <h4 class="text-2xl">Categories</h4>
             </div>
             <div class="flex my-2 space-x-2">
-                <tree-select v-model="form.categories" :multiple="true" value-consists-of="ALL" :options="computedCategoryTree"/>
+                <tree-select v-model="form.categories" :multiple="true" value-consists-of="ALL"
+                             :options="computedCategoryTree"/>
             </div>
 
 
             <div class="flex justify-between">
                 <h4 class="text-2xl">Price</h4>
-                <tier-price :tier-prices="form.tier_prices" :customer-groups="customerGroups" @tierPricesInputs="getTierPriceInputs"/>
+                <tier-price :tier-prices="form.tier_prices" :customer-groups="customerGroups"
+                            @tierPricesInputs="getTierPriceInputs"/>
             </div>
             <div class="flex my-2 space-x-2">
                 <div class="grow">
-                    <easy-input label="MRP" id="base_price" type="text" v-model="form.price.base_price" :error="form.errors[`prices.base_price`]"/>
+                    <easy-input label="MRP" id="base_price" type="text" v-model="form.price.base_price"
+                                :error="form.errors[`prices.base_price`]"/>
                 </div>
                 <div class="grow">
-                    <easy-input label="Offer" id="special_price" type="text" v-model="form.price.special_price" :error="form.errors[`prices.special_price`]"/>
+                    <easy-input label="Offer" id="special_price" type="text" v-model="form.price.special_price"
+                                :error="form.errors[`prices.special_price`]"/>
                 </div>
                 <div class="grow">
-                    <easy-input label="Offer Start Date" id="offer_start" type="date" v-model="form.price.offer_start" :error="form.errors[`prices.offer_start`]"/>
+                    <easy-input label="Offer Start Date" id="offer_start" type="date" v-model="form.price.offer_start"
+                                :error="form.errors[`prices.offer_start`]"/>
                 </div>
                 <div class="grow">
-                    <easy-input label="Offer End Date" id="offer_end" type="date" v-model="form.price.offer_end" :error="form.errors[`prices.offer_end`]"/>
+                    <easy-input label="Offer End Date" id="offer_end" type="date" v-model="form.price.offer_end"
+                                :error="form.errors[`prices.offer_end`]"/>
                 </div>
             </div>
-
 
 
             <div class="flex justify-between">
-                <h4 class="text-2xl">Inventories</h4>
-                <template v-if="form.maintain_stock">
-                    <inventories :selected-inventories="form.inventories" :available-inventories="props.inventories" @inventoryInputs="getInventoryInputs"/>
-                </template>
+                <h4 class="text-2xl">Stocks</h4>
             </div>
-            <div class="flex mt-2 mb-12 space-x-2">
+            <div class="flex mt-2 mb-2 space-x-2">
                 <div class="w-1/4">
-                    <easy-check-box label="Is available for sale?" id="in_stock" v-model:checked="form.in_stock" :error="form.errors.in_stock"/>
+                    <easy-check-box label="In Stock?" id="in_stock" v-model:checked="form.in_stock"
+                                    :error="form.errors.in_stock"/>
                 </div>
                 <div class="w-3/4">
-                    <easy-check-box label="Manage Stock?" id="manage_stock" v-model:checked="form.maintain_stock" :error="form.errors.maintain_stock"/>
+                    <easy-check-box label="Manage Stock?" id="manage_stock" v-model:checked="form.maintain_stock"
+                                    :error="form.errors.maintain_stock"/>
                 </div>
             </div>
 
+            <template v-if="form.maintain_stock">
+                <inventories :selected-inventories="form.stocks" :available-inventories="props.inventories"
+                             @inventoryInputs="getStockInputs"/>
+            </template>
         </template>
 
         <template #actions>
@@ -93,7 +101,8 @@
 </template>
 
 <script setup>
-import { computed, reactive } from 'vue';
+import {computed, reactive} from 'vue';
+import _ from 'lodash';
 import TreeSelect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import {useForm} from '@inertiajs/inertia-vue3'
@@ -123,100 +132,15 @@ const {getPreviewImage, constructImageObject, getMultiplePreviewImages} = imageP
 const props = defineProps({
     formData: {
         type: Object,
-        required: false,
-        default() {
-            return {
-                id: null,
-                status: true,
-                sku: "",
-                title: "",
-                small_description: "",
-                description: "",
-                type: "simple",
-                maintain_stock: true,
-                in_stock: true,
-                images: [
-                    {
-                        id: null,
-                        image: '',
-                        type: 'small',
-                        alt_name: '',
-                        product_id: null
-                    }
-                ],
-                slug: "",
-                meta_title: "",
-                meta_description: "",
-                meta_image: '',
-                price: {
-                    id: null,
-                    base_price: '0000.0000',
-                    special_price: '0000.0000',
-                    offer_start: new Date().toISOString().substring(0, 10),
-                    offer_end: new Date().toISOString().substring(0, 10),
-                    product_id: null
-                },
-                tier_prices: [
-                    {
-                        id: null,
-                        quantity: 1,
-                        special_price: '0000.0000',
-                        customer_group_id: 1,
-                        offer_start: new Date().toISOString().substring(0, 10),
-                        offer_end: new Date().toISOString().substring(0, 10),
-                        product_id: null
-                    }
-                ],
-                inventories: [
-                    {
-                        id: null,
-                        status: true,
-                        title: '',
-                        pivot: {
-                            product_id: null,
-                            inventory_id: null,
-                            quantity: 0
-                        }
-                    }
-                ],
-                categories: [
-                    {
-                        id: null,
-                        status: true,
-                        title: '',
-                        slug: '',
-                        pivot: {
-                            product_id: null,
-                            inventory_id: null
-                        }
-                    }
-                ]
-            }
-        }
+        required: true
     },
     customerGroups: {
         type: Array,
-        required: true,
-        default() {
-            return [
-                {
-                    id: 1,
-                    title: "Default"
-                }
-            ]
-        }
+        required: true
     },
     inventories: {
         type: Array,
-        required: true,
-        default() {
-            return [
-                {
-                    id: 1,
-                    title: "Default"
-                }
-            ]
-        }
+        required: true
     },
     categories: {
         type: Array,
@@ -232,6 +156,14 @@ const computedCategoryTree = computed(() => {
 let data = reactive({
     value: null
 })
+
+const setCategoryIds = (categories) => {
+    let ids = [];
+    _.forEach(categories, function (category) {
+        ids.push(category.pivot.category_id)
+    });
+    return ids;
+}
 
 const form = useForm({
     _method: (props.formData.id) ? 'PUT' : 'POST',
@@ -255,16 +187,16 @@ const form = useForm({
     images: getMultiplePreviewImages(props.formData.images),
     price: props.formData.price,
     tier_prices: props.formData.tier_prices,
-    inventories: props.formData.inventories,
-    categories: null
+    stocks: props.formData.stocks,
+    categories: setCategoryIds(props.formData.categories)
 })
 
 const getTierPriceInputs = (val) => {
     form.tier_prices = val
 }
 
-const getInventoryInputs = (val) => {
-    form.inventories = val
+const getStockInputs = (val) => {
+    form.stocks = val
 }
 
 function submit() {
@@ -272,12 +204,13 @@ function submit() {
     let url = (form.id) ? route('admin.catalog.product.simple.update', form.id) : route('admin.catalog.product.simple.store');
     form.transform((data) => ({
         ...data,
+        _method: (props.formData.id) ? 'PUT' : 'POST',
         status: (data.status) ? 1 : 0,
         maintain_stock: (data.maintain_stock) ? 1 : 0,
         in_stock: (data.in_stock) ? 1 : 0,
         images: constructImageObject(data.images),
         meta_image: constructImageObject(data.meta_image),
-    })).post(url,{
+    })).post(url, {
         errorBag: 'catalogProductSimple',
         onSuccess: () => {
             form.reset()

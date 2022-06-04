@@ -3,7 +3,7 @@
     <EasyAuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-3xl text-gray-800 leading-tight my-6">
-                Create a new product
+                Edit product
             </h2>
         </template>
         <simple-form
