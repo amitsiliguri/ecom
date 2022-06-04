@@ -33,15 +33,7 @@ let form = reactive({
         type: "simple",
         maintain_stock: true,
         in_stock: true,
-        images: [
-            {
-                id: null,
-                image: '',
-                type: 'small',
-                alt_name: '',
-                product_id: null
-            }
-        ],
+        images: [],
         slug: "",
         meta_title: "",
         meta_description: "",
