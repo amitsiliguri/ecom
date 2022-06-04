@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Easy\Ecommerce\Contracts\Catalog;
 
+use Easy\Ecommerce\Model\Catalog\Product as ProductModel;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -31,7 +32,7 @@ interface ProductServiceInterface
     ];
 
     /**
-     * @param bool $all
+     * @param bool $isPaginated
      * @param int $paginate
      * @param string $sortBy
      * @param string $direction
@@ -50,5 +51,5 @@ interface ProductServiceInterface
      * @param int $id
      * @return Builder|Collection|Model
      */
-    public function adminFormProductData(int $id) : Builder|Collection|Model;
+    public function getById(int $id) : Builder|Collection|Model;
 }

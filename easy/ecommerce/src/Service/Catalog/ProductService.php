@@ -83,7 +83,7 @@ class ProductService implements ProductServiceInterface
     /**
      * @inheritdoc
      */
-    public function adminFormProductData(int $id): Builder|Collection|Model
+    public function getById(int $id): Builder|Collection|Model
     {
         return $this->productModel::with([
             'price' => fn($q) => $q->select(['id', 'base_price', 'special_price', 'offer_start', 'offer_end', 'product_id']),
